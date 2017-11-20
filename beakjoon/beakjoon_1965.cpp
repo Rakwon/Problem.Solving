@@ -1,28 +1,30 @@
 #include <cstdio>
+#include <algorithm>
+#include <iostream>
+#include <vector>
+using namespace std;
 
-int max(int a, int b){
-	return a > b ? a : b;
-}
 int main(void){
 
+    int n, arr[1001];
+    vector<int> lis;
 
-	int n, arr[1001], lis[1001], ans;
-	scanf("%d", &n);
-	for(int i = 1; i<=n; ++i) 
-		scanf("%d", &arr[i]);
+    
+    scanf("%d", &n);
+    for(int i = 1; i<=n; ++i)
+       scanf("%d", &arr[i]);
+    lis.push_back(arr[1]);
 
-	ans = 1;
-	for(int i = 1; i<=n; ++i){
-		lis[i] = 1;
-		for(int j = 1; j<=i; ++j){
-			if(arr[i] > arr[j] && lis[i] < lis[j]+1){
-				lis[i] = lis[j] + 1;
-				ans = max(ans, lis[i]);
-			}
-		}
-	}
+    for(int i = 2; i<=n; ++i){
+        if( arr[i] > lis[lis.size()-1] )
+            lis.push_back(arr[i]);
+        else{
+            vector<int>::iterator it = lower_bound(lis.begin(), lis.end(), arr[i]);
+            *it = arr[i];
+        }
+    }
 
-	printf("%d", ans);
-	return 0;
+    //for(int i = 0; i< lis.size(); ++i) printf("%d ", lis[i]);
+    printf("%d", lis.size());
+    return 0;
 }
-
